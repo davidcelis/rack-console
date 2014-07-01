@@ -25,7 +25,7 @@ $ gem install rack-console
 ## Usage
 
 rack-console ships with a `rack-console` executable that will load your application in an IRB shell (or
-[Pry](http://pryrepl.org) if that's included in your Gemfile):
+[Pry](http://pryrepl.org) if that's included in your Gemfile). Assuming you have a `config.ru` file in the current directory, simply run:
 
 ```bash
 $ bundle exec rack-console
