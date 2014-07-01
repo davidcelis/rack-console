@@ -1,5 +1,5 @@
 module Rack
-  module Console
+  class Console
     class Version
       MAJOR = 1
       MINOR = 0

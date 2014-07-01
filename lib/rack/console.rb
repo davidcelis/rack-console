@@ -1,7 +1,19 @@
+require 'rack/builder'
+
 require 'rack/console/version'
 
 module Rack
-  module Console
-    # Your code goes here...
+  class Console
+    def self.start
+      Rack::Builder.parse_file('config.ru')
+
+      begin
+        require 'pry'
+        Pry.start
+      rescue LoadError
+        require 'irb'
+        IRB.start
+      end
+    end
   end
 end

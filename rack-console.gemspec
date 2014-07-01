@@ -22,5 +22,7 @@ Gem::Specification.new do |s|
   s.test_files    = Dir['spec/**/*.rb']
   s.require_paths = ['lib']
 
+  s.add_dependency 'rack', '>= 1.1'
+
   s.add_development_dependency 'rspec', '~> 3.0'
 end
