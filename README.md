@@ -40,12 +40,26 @@ pry(main)> ENV['RACK_ENV']
 => "production"
 ```
 
-rack-console also provides itself as a class if you want to create a simple console for your own Rack framework:
+## Framework CLI Example
+
+Because rack-console is wrapped in a class, it's easy to provide a `console` subcommand to a CLI for your own Rack framework. For example, here's how you could hypothetically implement a `console` subcommand for a generic Rack CLI using [Thor](https://github.com/erikhuda/thor):
 
 ```ruby
 require 'rack/console'
+require 'thor'
 
-Rack::Console.start
+module Rack
+  class CLI < Thor
+    desc 'console [ENVIRONMENT]', 'Start a Rack console'
+    def console(environment = 'development')
+      ENV['RACK_ENV'] = environment
+
+      Rack::Console.start
+    end
+  end
+end
+
+Rack::CLI.start(ARGV)
 ```
 
 ## Contributing
