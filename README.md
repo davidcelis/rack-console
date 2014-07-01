@@ -24,18 +24,20 @@ $ gem install rack-console
 
 ## Usage
 
-rack-console ships with a `rack-console` executable:
-
-```bash
-$ bundle exec rack-console
-2.1.2p95>
-```
-
-If `pry` is also included in your Gemfile, rack-console will load that instead:
+rack-console ships with a `rack-console` executable that will load your application in an IRB shell (or
+[Pry](http://pryrepl.org) if that's included in your Gemfile):
 
 ```bash
 $ bundle exec rack-console
 pry(main)>
+```
+
+Additionaly, like `rails console`, you can provide your environment as an argument:
+
+```ruby
+$ bundle exec rack-console production
+pry(main)> ENV['RACK_ENV']
+=> "production"
 ```
 
 rack-console also provides itself as a class if you want to create a simple console for your own Rack framework:
