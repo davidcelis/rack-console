@@ -1,4 +1,4 @@
-# Rack::Console
+# Rack::Console [![Build Status](https://travis-ci.org/davidcelis/rack-console.svg?branch=master)](https://travis-ci.org/davidcelis/rack-console)
 
 Find yourself missing a `rails console` analogue in your other Ruby web applications? This lightweight gem provides a Rack::Console class that will load your Rack application's code and environment into an IRB or Pry session. Either use `Rack::Console.new.start` directly, or run the provided `rack-console` executable.
 
