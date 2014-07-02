@@ -1,6 +1,6 @@
 # Rack::Console
 
-Find yourself missing a `rails console` analogue in your other Ruby web applications? This lightweight gem provides a Rack::Console that will load your Rack application's code and environment into an IRB or Pry session. Either use `Rack::Console.start` directly, or run the provided `rack-console` executable.
+Find yourself missing a `rails console` analogue in your other Ruby web applications? This lightweight gem provides a Rack::Console class that will load your Rack application's code and environment into an IRB or Pry session. Either use `Rack::Console.start` directly, or run the provided `rack-console` executable.
 
 ## Installation
 
@@ -24,47 +24,25 @@ $ gem install rack-console
 
 ## Usage
 
-rack-console ships with a `rack-console` executable that will load your application in an IRB shell (or
+Rack::Console ships with a `rack-console` executable that will load your application in an IRB shell (or
 [Pry](http://pryrepl.org) if that's included in your Gemfile). Assuming you have a `config.ru` file in the current directory, simply run:
 
 ```ruby
 $ bundle exec rack-console
-pry(main)> def hello_world() puts 'Hello world!' end
-=> :hello_world
-pry(main)> hello_world
-Hello world!
-=> nil
-pry(main)> reload!
-Reloading...
-pry(main)> hello_world
-NameError: undefined local variable or method `hello_world' for main:Object
-from (pry):1:in `__pry__'
+pry(main)>
 ```
 
-Additionaly, like `rails console`, you can provide your environment as an argument:
+Rack::Console supports some of the same things that `rails console` provides, as well as arguments used in `rackup`:
 
-```ruby
-$ bundle exec rack-console production
-pry(main)> ENV['RACK_ENV']
-=> "production"
-```
-
-If you're using a non-standard `config.ru` file, use the `--config` (or `-c`) option:
-
-```bash
-$ bundle exec rack-console --config hello.ru
-```
-
-`rack-console` also accepts arguments to require a file/library or add paths to the `$LOAD_PATH` just like `ruby`, `irb`, or `pry`:
-
-```bash
-$ bundle exec rack-console -r json # Requires the JSON gem
-$ bundle exec rack-console -I lib:test # Adds ./lib and ./test to $LOAD_PATH
-```
+ * Supply the RACK_ENV as an argument (`bundle exec rack-console production`)
+ * A `reload!` method to discard new code or defined variables/constants
+ * The `-c` option (or `--config`) to specify a non-standard `config.ru` file
+ * The `-r` option (or `--require`) to require a file/library before Rack::Console loads
+ * The `-I` option (or `--include`) to specify paths (colon-separated) to add to `$LOAD_PATH` before Rack::Console loads
 
 ## Framework CLI Example
 
-Because rack-console is wrapped in a class, it's easy to provide a `console` subcommand to a CLI for your own Rack framework. For example, here's how you could hypothetically implement a `console` subcommand for a generic Rack CLI using [Thor](https://github.com/erikhuda/thor):
+Because Rack::Console is just a class, it's easy to provide a `console` subcommand to a CLI for your own Rack framework. For example, here's how you could hypothetically implement a `console` subcommand for a generic Rack CLI using [Thor](https://github.com/erikhuda/thor):
 
 ```ruby
 require 'rack/console'
@@ -74,6 +52,7 @@ module Rack
   class CLI < Thor
     desc 'console [ENVIRONMENT]', 'Start a Rack console'
     def console
+      # Rack::Console will parse ARGV on its own, so just let it handle that.
       Rack::Console.start(ARGV)
     end
   end
@@ -81,8 +60,6 @@ end
 
 Rack::CLI.start(ARGV)
 ```
-
-Note that `Rack::Console` will handle command-line arguments on its own!
 
 ## Contributing
 
