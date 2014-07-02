@@ -25,7 +25,7 @@ OptionParser.new do |opts|
   end
 end.parse!
 
-if environment = ARGV.unshift
+if environment = ARGV.shift
   options[:environment] = environment
 end
 
