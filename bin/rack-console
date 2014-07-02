@@ -2,4 +2,31 @@
 
 require 'rack/console'
 
-Rack::Console.start(ARGV)
+options = {}
+
+OptionParser.new do |opts|
+  opts.banner = 'USAGE: rack-console [OPTIONS] [ENVIRONMENT]'
+
+  opts.on('-c', '--config [RACKUP_FILE]', 'Specify a rackup config file') do |config|
+    options[:config] = config
+  end
+
+  opts.on('-r', '--require [LIBRARY]', 'Require a file or library before the Rack console loads') do |library|
+    options[:require] = library
+  end
+
+  opts.on('-I', '--include [PATHS]', 'Add paths (colon-separated) to the $LOAD_PATH') do |paths|
+    options[:include] = paths.split(':')
+  end
+
+  opts.on('-v', '--version', 'Print version and exit') do |v|
+    puts Rack::Console::VERSION
+    exit 0
+  end
+end.parse!
+
+if environment = ARGV.unshift
+  options[:environment] = environment
+end
+
+Rack::Console.new(options).start

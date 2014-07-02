@@ -1,6 +1,6 @@
 # Rack::Console
 
-Find yourself missing a `rails console` analogue in your other Ruby web applications? This lightweight gem provides a Rack::Console class that will load your Rack application's code and environment into an IRB or Pry session. Either use `Rack::Console.start` directly, or run the provided `rack-console` executable.
+Find yourself missing a `rails console` analogue in your other Ruby web applications? This lightweight gem provides a Rack::Console class that will load your Rack application's code and environment into an IRB or Pry session. Either use `Rack::Console.new.start` directly, or run the provided `rack-console` executable.
 
 ## Installation
 
@@ -51,9 +51,16 @@ require 'thor'
 module Rack
   class CLI < Thor
     desc 'console [ENVIRONMENT]', 'Start a Rack console'
+
+    method_option :config,  aliases: '-c', type: 'string',
+                            desc: 'Specify a Rackup file (default: config.ru)'
+    method_option :require, aliases: '-r', type: 'string',
+                            desc: 'Require a file/library before console boots'
+    method_option :include, aliases: '-I', type: 'string',
+                            desc: 'Add colon-separated paths to $LOAD_PATH'
+
     def console
-      # Rack::Console will parse ARGV on its own, so just let it handle that.
-      Rack::Console.start(ARGV)
+      Rack::Console.new(options)start
     end
   end
 end

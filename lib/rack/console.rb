@@ -4,35 +4,22 @@ require 'optparse'
 
 module Rack
   class Console
-    def self.start(args = ARGV)
-      options = { config: 'config.ru' }
+    def initialize(options = {})
+      @options = { config: 'config.ru' }.merge(options)
+    end
 
-      OptionParser.new do |opts|
-        opts.banner = 'USAGE: rack-console [OPTIONS] [ENVIRONMENT]'
+    def start
+      ENV['RACK_ENV'] = @options[:environment] || 'development'
 
-        opts.on('-c', '--config [RACKUP_FILE]', 'Specify a rackup config file') do |config|
-          options[:config] = config
-        end
-
-        opts.on('-r', '--require [LIBRARY]', 'Require a file or library before the Rack console loads') do |library|
-          require library
-        end
-
-        opts.on('-I', '--include [PATHS]', 'Add paths (colon-separated) to the $LOAD_PATH') do |paths|
-          $LOAD_PATH.unshift(*paths.split(':'))
-        end
-
-        opts.on('-v', '--version', 'Print version and exit') do |v|
-          puts Rack::Console::VERSION
-          exit 0
-        end
-      end.parse!(args)
-
-      if environment = args.shift
-        ENV['RACK_ENV'] = environment
+      if includes = @options[:include]
+        $LOAD_PATH.unshift(*includes)
       end
 
-      Rack::Builder.parse_file(options[:config])
+      if library = @options[:require]
+        require library
+      end
+
+      Rack::Builder.parse_file(@options[:config])
 
       Object.class_eval do
         def reload!
