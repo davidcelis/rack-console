@@ -46,6 +46,13 @@ If you're using a non-standard `config.ru` file, use the `--config` (or `-c`) op
 $ bundle exec rack-console --config hello.ru
 ```
 
+`rack-console` also accepts arguments to require a file/library or add paths to the `$LOAD_PATH` just like `ruby`, `irb`, or `pry`:
+
+```bash
+$ bundle exec rack-console -r json # Requires the JSON gem
+$ bundle exec rack-console -I lib:test # Adds ./lib and ./test to $LOAD_PATH
+```
+
 ## Framework CLI Example
 
 Because rack-console is wrapped in a class, it's easy to provide a `console` subcommand to a CLI for your own Rack framework. For example, here's how you could hypothetically implement a `console` subcommand for a generic Rack CLI using [Thor](https://github.com/erikhuda/thor):

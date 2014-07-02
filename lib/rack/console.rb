@@ -14,6 +14,14 @@ module Rack
           options[:config] = config
         end
 
+        opts.on('-r', '--require [LIBRARY]', 'Require a file or library before the Rack console loads') do |library|
+          require library
+        end
+
+        opts.on('-I', '--include [PATHS]', 'Add paths (colon-separated) to the $LOAD_PATH') do |paths|
+          $LOAD_PATH.unshift(*paths.split(':'))
+        end
+
         opts.on('-v', '--version', 'Print version and exit') do |v|
           puts Rack::Console::VERSION
           exit 0
