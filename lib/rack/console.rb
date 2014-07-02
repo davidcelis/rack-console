@@ -1,11 +1,30 @@
 require 'rack'
-
 require 'rack/console/version'
+require 'optparse'
 
 module Rack
   class Console
-    def self.start
-      Rack::Builder.parse_file('config.ru')
+    def self.start(args = ARGV)
+      options = { config: 'config.ru' }
+
+      OptionParser.new do |opts|
+        opts.banner = 'USAGE: rack-console [options] [environment]'
+
+        opts.on('-c', '--config [RACKUP_FILE]', 'Specify a rackup config file') do |config|
+          options[:config] = config
+        end
+
+        opts.on('-v', '--version', 'Print version and exit') do |v|
+          puts Rack::Console::VERSION
+          exit 0
+        end
+      end.parse!(args)
+
+      if environment = args.shift
+        ENV['RACK_ENV'] = environment
+      end
+
+      Rack::Builder.parse_file(options[:config])
 
       begin
         require 'pry'

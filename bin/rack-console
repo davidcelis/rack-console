@@ -1,20 +1,5 @@
 #!/usr/bin/env ruby
 
 require 'rack/console'
-require 'optparse'
 
-options = {}
-OptionParser.new do |opts|
-  opts.banner = 'USAGE: rack-console [options] [environment]'
-
-  opts.on('-v', '--version', 'Print version and exit') do |v|
-    puts Rack::Console::VERSION
-    exit 0
-  end
-end.parse!
-
-if environment = ARGV.shift
-  ENV['RACK_ENV'] = environment
-end
-
-Rack::Console.start
+Rack::Console.start(ARGV)
