@@ -40,6 +40,12 @@ pry(main)> ENV['RACK_ENV']
 => "production"
 ```
 
+If you're using a non-standard `config.ru` file, use the `--config` (or `-c`) option:
+
+```bash
+$ bundle exec rack-console --config hello.ru
+```
+
 ## Framework CLI Example
 
 Because rack-console is wrapped in a class, it's easy to provide a `console` subcommand to a CLI for your own Rack framework. For example, here's how you could hypothetically implement a `console` subcommand for a generic Rack CLI using [Thor](https://github.com/erikhuda/thor):
@@ -51,16 +57,16 @@ require 'thor'
 module Rack
   class CLI < Thor
     desc 'console [ENVIRONMENT]', 'Start a Rack console'
-    def console(environment = 'development')
-      ENV['RACK_ENV'] = environment
-
-      Rack::Console.start
+    def console
+      Rack::Console.start(ARGV)
     end
   end
 end
 
 Rack::CLI.start(ARGV)
 ```
+
+Note that `Rack::Console` will handle command-line arguments on its own!
 
 ## Contributing
 

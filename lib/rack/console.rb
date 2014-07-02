@@ -8,7 +8,7 @@ module Rack
       options = { config: 'config.ru' }
 
       OptionParser.new do |opts|
-        opts.banner = 'USAGE: rack-console [options] [environment]'
+        opts.banner = 'USAGE: rack-console [OPTIONS] [ENVIRONMENT]'
 
         opts.on('-c', '--config [RACKUP_FILE]', 'Specify a rackup config file') do |config|
           options[:config] = config
