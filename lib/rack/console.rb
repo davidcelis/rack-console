@@ -34,6 +34,13 @@ module Rack
 
       Rack::Builder.parse_file(options[:config])
 
+      Object.class_eval do
+        def reload!
+          puts 'Reloading...'
+          exec $0
+        end
+      end
+
       begin
         require 'pry'
         Pry.start

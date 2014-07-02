@@ -27,9 +27,18 @@ $ gem install rack-console
 rack-console ships with a `rack-console` executable that will load your application in an IRB shell (or
 [Pry](http://pryrepl.org) if that's included in your Gemfile). Assuming you have a `config.ru` file in the current directory, simply run:
 
-```bash
+```ruby
 $ bundle exec rack-console
-pry(main)>
+pry(main)> def hello_world() puts 'Hello world!' end
+=> :hello_world
+pry(main)> hello_world
+Hello world!
+=> nil
+pry(main)> reload!
+Reloading...
+pry(main)> hello_world
+NameError: undefined local variable or method `hello_world' for main:Object
+from (pry):1:in `__pry__'
 ```
 
 Additionaly, like `rails console`, you can provide your environment as an argument:
