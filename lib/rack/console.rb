@@ -1,14 +1,18 @@
 require 'rack'
+require 'rack/console/methods'
+require 'rack/console/session'
 require 'rack/console/version'
 require 'optparse'
 
 module Rack
   class Console
-    def initialize(options = {})
-      @options = { config: 'config.ru' }.merge(options)
+    def self.start(options = {})
+      self.new(options).start
     end
 
-    def start
+    def initialize(options = {})
+      @options = { config: 'config.ru' }.merge(options)
+
       ENV['RACK_ENV'] = @options[:environment] || 'development'
 
       if includes = @options[:include]
@@ -18,15 +22,14 @@ module Rack
       if library = @options[:require]
         require library
       end
+    end
 
-      Rack::Builder.parse_file(@options[:config])
+    def start
+      app = Rack::Builder.parse_file(@options[:config]).first
 
-      Object.class_eval do
-        def reload!
-          puts 'Reloading...'
-          exec $0
-        end
-      end
+      # Add convenience methods to the top-level binding (main)
+      main.extend(Rack::Console::Methods)
+      main.instance_variable_set(:@app, Rack::Console::Session.new(app))
 
       begin
         require 'pry'
@@ -35,6 +38,12 @@ module Rack
         require 'irb'
         IRB.start
       end
+    end
+
+    private
+
+    def main
+      TOPLEVEL_BINDING.eval('self')
     end
   end
 end

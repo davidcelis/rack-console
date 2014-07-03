@@ -26,6 +26,7 @@ Gem::Specification.new do |s|
   s.require_paths = ['lib']
 
   s.add_dependency 'rack', '>= 1.1'
+  s.add_dependency 'rack-test'
 
   s.add_development_dependency 'rspec', '~> 3.0'
 end

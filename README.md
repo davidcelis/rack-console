@@ -34,6 +34,7 @@ pry(main)>
 
 Rack::Console supports some of the same things that `rails console` provides, as well as arguments used in `rackup`:
 
+ * An `app` method that will return your underlying Rack application with [rack-test](https://github.com/brynary/rack-test) methods mixed in. You can perform fake requests to your app (e.g. `response = app.get('/')`)
  * Supply the RACK_ENV as an argument (`bundle exec rack-console production`)
  * A `reload!` method to discard new code or defined variables/constants
  * The `-c` option (or `--config`) to specify a non-standard `config.ru` file
