@@ -2,7 +2,6 @@ require 'rack'
 require 'rack/console/methods'
 require 'rack/console/session'
 require 'rack/console/version'
-require 'optparse'
 
 module Rack
   class Console
