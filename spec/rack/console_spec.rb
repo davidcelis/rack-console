@@ -40,8 +40,6 @@ describe Rack::Console do
   it 'accepts an argument to set the environment' do
     Rack::Console.new(environment: 'production').start
     expect(ENV['RACK_ENV']).to eq('production')
-
-    ENV['RACK_ENV'] = 'test'
   end
 
   describe 'preamble message' do
@@ -63,5 +61,8 @@ describe Rack::Console do
 
   after do
     Dir.chdir @old_pwd
+
+    ENV['RACK_ENV'] = 'test'
+    ENV['RACK_CONSOLE_PREAMBLE'] = nil
   end
 end

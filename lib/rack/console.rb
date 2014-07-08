@@ -56,7 +56,10 @@ module Rack
     end
 
     def default_options
-      { config: 'config.ru', environment: 'development' }
+      {
+        config: 'config.ru',
+        environment: ENV['RACK_ENV'] || 'development'
+      }
     end
   end
 end
