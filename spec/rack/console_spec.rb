@@ -40,6 +40,25 @@ describe Rack::Console do
   it 'accepts an argument to set the environment' do
     Rack::Console.new(environment: 'production').start
     expect(ENV['RACK_ENV']).to eq('production')
+
+    ENV['RACK_ENV'] = 'test'
+  end
+
+  describe 'preamble message' do
+    it 'defaults to a loading message' do
+      preamble = "Loading #{ENV['RACK_ENV']} environment (Rack::Console #{Rack::Console::VERSION})"
+
+      Rack::Console.new.start
+      expect(ENV['RACK_CONSOLE_PREAMBLE']).to eq(preamble)
+    end
+
+    it 'does not override a preamble if one has already been set' do
+      ENV['RACK_CONSOLE_PREAMBLE'] = 'Hello, Rack::Console!'
+
+      expect { Rack::Console.new.start }.not_to change { ENV['RACK_CONSOLE_PREAMBLE'] }
+
+      ENV['RACK_CONSOLE_PREAMBLE'] = nil
+    end
   end
 
   after do

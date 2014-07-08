@@ -10,18 +10,14 @@ module Rack
     end
 
     def initialize(options = {})
-      @options = { config: 'config.ru' }.merge(options)
+      @options = default_options.merge(options)
 
-      ENV['RACK_ENV'] = @options[:environment] || 'development'
-      ENV['RACK_CONSOLE_PREAMBLE'] ||= "Loading #{ENV['RACK_ENV']} environment (Rack::Console #{Rack::Console::VERSION})"
+      ENV['RACK_ENV'] = @options[:environment]
+      set_preamble
 
-      if includes = @options[:include]
-        $LOAD_PATH.unshift(*includes)
-      end
+      $LOAD_PATH.unshift(*@options[:include]) if @options[:include]
 
-      if library = @options[:require]
-        require library
-      end
+      require @options[:require] if @options[:require]
     end
 
     def start
@@ -48,6 +44,19 @@ module Rack
 
     def main
       TOPLEVEL_BINDING.eval('self')
+    end
+
+    def set_preamble
+      return if ENV['RACK_CONSOLE_PREAMBLE']
+
+      loading = "Loading #{ENV['RACK_ENV']} environment"
+      version = "(Rack::Console #{Rack::Console::VERSION})"
+
+      ENV['RACK_CONSOLE_PREAMBLE'] = "#{loading} #{version}"
+    end
+
+    def default_options
+      { config: 'config.ru', environment: 'development' }
     end
   end
 end
