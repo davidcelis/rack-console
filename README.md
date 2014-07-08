@@ -61,7 +61,7 @@ module Rack
                             desc: 'Add colon-separated paths to $LOAD_PATH'
 
     def console
-      Rack::Console.new(options)start
+      Rack::Console.new(options).start
     end
   end
 end
