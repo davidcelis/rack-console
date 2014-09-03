@@ -61,6 +61,11 @@ module Rack
                             desc: 'Add colon-separated paths to $LOAD_PATH'
 
     def console
+      # Set a custom intro message:
+      #   ENV['RACK_CONSOLE_INTRO'] = 'Loading Rack::Console...'
+      #
+      # Or, to prevent an intro message from being printed at all:
+      #   ENV['IGNORE_RACK_CONSOLE_INTRO'] = false
       Rack::Console.new(options).start
     end
   end
