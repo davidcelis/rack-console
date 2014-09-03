@@ -47,15 +47,15 @@ describe Rack::Console do
       preamble = "Loading #{ENV['RACK_ENV']} environment (Rack::Console #{Rack::Console::VERSION})"
 
       Rack::Console.new.start
-      expect(ENV['RACK_CONSOLE_PREAMBLE']).to eq(preamble)
+      expect(ENV['RACK_CONSOLE_INTRO']).to eq(preamble)
     end
 
     it 'does not override a preamble if one has already been set' do
-      ENV['RACK_CONSOLE_PREAMBLE'] = 'Hello, Rack::Console!'
+      ENV['RACK_CONSOLE_INTRO'] = 'Hello, Rack::Console!'
 
-      expect { Rack::Console.new.start }.not_to change { ENV['RACK_CONSOLE_PREAMBLE'] }
+      expect { Rack::Console.new.start }.not_to change { ENV['RACK_CONSOLE_INTRO'] }
 
-      ENV['RACK_CONSOLE_PREAMBLE'] = nil
+      ENV['RACK_CONSOLE_INTRO'] = nil
     end
   end
 
@@ -63,6 +63,6 @@ describe Rack::Console do
     Dir.chdir @old_pwd
 
     ENV['RACK_ENV'] = 'test'
-    ENV['RACK_CONSOLE_PREAMBLE'] = nil
+    ENV['RACK_CONSOLE_INTRO'] = nil
   end
 end

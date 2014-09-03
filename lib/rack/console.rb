@@ -21,9 +21,7 @@ module Rack
     end
 
     def start
-      if ENV['RACK_CONSOLE_PREAMBLE'] && !ENV['RACK_CONSOLE_PREAMBLE'].empty?
-        puts ENV['RACK_CONSOLE_PREAMBLE']
-      end
+      puts ENV['RACK_CONSOLE_INTRO'] unless ENV['IGNORE_RACK_CONSOLE_INTRO']
 
       app = Rack::Builder.parse_file(@options[:config]).first
 
@@ -47,12 +45,12 @@ module Rack
     end
 
     def set_preamble
-      return if ENV['RACK_CONSOLE_PREAMBLE']
+      return if ENV['RACK_CONSOLE_INTRO']
 
       loading = "Loading #{ENV['RACK_ENV']} environment"
       version = "(Rack::Console #{Rack::Console::VERSION})"
 
-      ENV['RACK_CONSOLE_PREAMBLE'] = "#{loading} #{version}"
+      ENV['RACK_CONSOLE_INTRO'] = "#{loading} #{version}"
     end
 
     def default_options
