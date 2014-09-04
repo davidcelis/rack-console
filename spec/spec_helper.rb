@@ -1,4 +1,5 @@
 ENV['RACK_ENV'] = 'test'
+ENV['IGNORE_RACK_CONSOLE_INTRO'] = 'true'
 
 # See http://rubydoc.info/gems/rspec-core/RSpec/Core/Configuration
 RSpec.configure do |config|
