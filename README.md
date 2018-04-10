@@ -65,7 +65,7 @@ module Rack
       #   ENV['RACK_CONSOLE_INTRO'] = 'Loading Rack::Console...'
       #
       # Or, to prevent an intro message from being printed at all:
-      #   ENV['IGNORE_RACK_CONSOLE_INTRO'] = false
+      #   ENV['IGNORE_RACK_CONSOLE_INTRO'] = 'true'
       Rack::Console.new(options).start
     end
   end
