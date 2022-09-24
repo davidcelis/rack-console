@@ -23,7 +23,7 @@ module Rack
     def start
       puts ENV['RACK_CONSOLE_INTRO'] unless ENV['IGNORE_RACK_CONSOLE_INTRO']
 
-      app = Rack::Builder.parse_file(@options[:config]).first
+      app = Rack::Builder.parse_file(@options[:config])
 
       # Add convenience methods to the top-level binding (main)
       main.extend(Rack::Console::Methods)
