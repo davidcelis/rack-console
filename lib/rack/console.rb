@@ -29,10 +29,10 @@ module Rack
       main.extend(Rack::Console::Methods)
       main.instance_variable_set(:@app, Rack::Console::Session.new(app))
 
-      begin
+      if Gem::Specification.find_all_by_name('pry').any?
         require 'pry'
         Pry.start
-      rescue LoadError
+      else
         require 'irb'
         IRB.start
       end
