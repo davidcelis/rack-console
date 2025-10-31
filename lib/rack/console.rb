@@ -16,6 +16,7 @@ module Rack
       @environment = options[:environment]
       @include = options[:include]
       @require = options[:require]
+      @use_pry = !!options[:pry]
     end
 
     def start
@@ -32,7 +33,7 @@ module Rack
       main.instance_variable_set(:@app, Rack::Console::Session.new(app))
       main.extend(Rack::Console::Methods)
 
-      if Gem::Specification.find_all_by_name("pry").any?
+      if Gem::Specification.find_all_by_name("pry").any? && @use_pry
         require "pry"
         Pry.start
       else

@@ -8,20 +8,24 @@ options = {}
 OptionParser.new do |opts|
   opts.banner = "USAGE: rack-console [options]"
 
-  opts.on("-c", "--config [RACKUP_FILE]", "Specify a rackup config file") do |config|
+  opts.on("-c", "--config [RACKUP_FILE]", "Specify a rackup config file (default: ./config.ru)") do |config|
     options[:config] = config
   end
 
-  opts.on("-e", "--environment [ENVIRONMENT]", "Specify the Rack environment") do |environment|
+  opts.on("-e", "--environment [ENVIRONMENT]", "Specify the Rack environment (default: development)") do |environment|
     options[:environment] = environment
+  end
+
+  opts.on("-I", "--include [PATHS]", "Add paths (colon-separated) to the $LOAD_PATH") do |paths|
+    options[:include] = paths.split(":")
   end
 
   opts.on("-r", "--require [LIBRARY]", "Require a file or library before the Rack console loads") do |library|
     options[:require] = library
   end
 
-  opts.on("-I", "--include [PATHS]", "Add paths (colon-separated) to the $LOAD_PATH") do |paths|
-    options[:include] = paths.split(":")
+  opts.on("-P", "--[no-]pry", "Use Pry if available or explicitly disable it") do |pry|
+    options[:pry] = pry
   end
 
   opts.on("-v", "--version", "Print version and exit") do |v|
