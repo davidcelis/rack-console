@@ -1,1 +1,1 @@
-require 'rack/console'
+require "rack/console"

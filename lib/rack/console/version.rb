@@ -6,7 +6,7 @@ module Rack
       PATCH = 1
 
       def self.to_s
-        [MAJOR, MINOR, PATCH].join('.')
+        [MAJOR, MINOR, PATCH].join(".")
       end
     end
 
