@@ -10,24 +10,27 @@ module Rack
     end
 
     def initialize(options = {})
-      @options = default_options.merge(options)
+      options = default_options.merge(options)
 
-      ENV["RACK_ENV"] = @options[:environment]
-      set_preamble
-
-      $LOAD_PATH.unshift(*@options[:include]) if @options[:include]
-
-      require @options[:require] if @options[:require]
+      @config = options[:config]
+      @environment = options[:environment]
+      @include = options[:include]
+      @require = options[:require]
     end
 
     def start
+      ENV["RACK_ENV"] = @environment
+      $LOAD_PATH.unshift(*@include) if @include
+      require @require if @require
+
+      set_preamble
+
       puts ENV["RACK_CONSOLE_INTRO"] unless ENV["IGNORE_RACK_CONSOLE_INTRO"]
 
-      app = Rack::Builder.parse_file(@options[:config])
-
       # Add convenience methods to the top-level binding (main)
-      main.extend(Rack::Console::Methods)
+      app = Rack::Builder.parse_file(@config)
       main.instance_variable_set(:@app, Rack::Console::Session.new(app))
+      main.extend(Rack::Console::Methods)
 
       if Gem::Specification.find_all_by_name("pry").any?
         require "pry"
@@ -56,7 +59,7 @@ module Rack
     def default_options
       {
         config: "config.ru",
-        environment: ENV["RACK_ENV"] || "development"
+        environment: ENV.fetch("RACK_ENV", "development")
       }
     end
   end
